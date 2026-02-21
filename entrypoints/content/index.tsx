@@ -4,6 +4,30 @@ import { getNote } from '@/lib/storage';
 import { NotesOverlay } from './components/NotesOverlay';
 import { createBadge, updateBadge } from './badge';
 
+// LinkedIn uses obfuscated class names that change frequently.
+// Use stable selectors: tag names, ARIA roles, and structural patterns.
+function findProfileName(): HTMLElement | null {
+  // The profile name is always the first h1 on a profile page
+  return document.querySelector('h1');
+}
+
+function findProfileHeadline(): string {
+  // Headline is in a .text-body-medium element near the top of the profile
+  const el = document.querySelector('.text-body-medium');
+  return el?.textContent?.trim() ?? '';
+}
+
+function findProfileImage(): string | undefined {
+  // Profile photo has class containing 'profile-photo-edit__preview' (own profile)
+  // or 'pv-top-card-profile-picture__image' (other profiles)
+  const img =
+    document.querySelector<HTMLImageElement>('img.profile-photo-edit__preview') ??
+    document.querySelector<HTMLImageElement>('img[class*="pv-top-card-profile-picture"]') ??
+    document.querySelector<HTMLImageElement>('main img.evi-image[width="152"]') ??
+    document.querySelector<HTMLImageElement>('main img.evi-image[alt][width="128"]');
+  return img?.src;
+}
+
 export default defineContentScript({
   matches: ['*://*.linkedin.com/in/*'],
   cssInjectionMode: 'ui',
@@ -17,27 +41,18 @@ export default defineContentScript({
       const profileId = extractProfileId(window.location.href);
       if (!profileId) return null;
 
-      const nameEl = document.querySelector(
-        'h1.text-heading-xlarge'
-      ) as HTMLElement | null;
-      const headlineEl = document.querySelector(
-        '.text-body-medium.break-words'
-      ) as HTMLElement | null;
-      const imgEl = document.querySelector(
-        'img.pv-top-card-profile-picture__image--show'
-      ) as HTMLImageElement | null;
-
+      const nameEl = findProfileName();
       return {
         profileId,
         profileName: nameEl?.innerText?.trim() ?? profileId,
-        headline: headlineEl?.innerText?.trim() ?? '',
+        headline: findProfileHeadline(),
         profileUrl: window.location.href.split('?')[0],
-        profileImageUrl: imgEl?.src,
+        profileImageUrl: findProfileImage(),
       };
     }
 
     async function injectBadge() {
-      const nameEl = document.querySelector('h1.text-heading-xlarge');
+      const nameEl = findProfileName();
       if (!nameEl || badge?.isConnected) return;
 
       const profileId = extractProfileId(window.location.href);
@@ -45,14 +60,23 @@ export default defineContentScript({
 
       const existing = await getNote(profileId);
       badge = createBadge(!!existing, () => openOverlay());
-      nameEl.parentElement?.insertBefore(badge, nameEl.nextSibling);
+
+      // Insert badge after the h1, within its parent
+      const nameParent = nameEl.parentElement;
+      if (nameParent) {
+        nameParent.style.display = 'inline-flex';
+        nameParent.style.alignItems = 'center';
+        nameParent.appendChild(badge);
+      }
     }
 
     function openOverlay() {
       const info = getProfileInfo();
       if (!info) return;
 
-      // Create container
+      // Prevent duplicate overlays
+      if (document.getElementById('linkedin-notes-overlay-root')) return;
+
       const container = document.createElement('div');
       container.id = 'linkedin-notes-overlay-root';
       document.body.appendChild(container);
@@ -100,8 +124,13 @@ export default defineContentScript({
 
       if (!profileId) return;
 
-      // Wait for profile to render
-      await new Promise((r) => setTimeout(r, 1000));
+      // Wait for profile to render — poll for the h1 instead of a fixed timeout
+      let attempts = 0;
+      while (!findProfileName() && attempts < 20) {
+        await new Promise((r) => setTimeout(r, 250));
+        attempts++;
+      }
+
       await injectBadge();
     }
 
@@ -109,7 +138,7 @@ export default defineContentScript({
     await handleNavigation();
 
     // LinkedIn is a SPA — watch for URL changes
-    const observer = ctx.setInterval(() => {
+    ctx.setInterval(() => {
       const profileId = extractProfileId(window.location.href);
       if (profileId !== currentProfileId) {
         handleNavigation();
