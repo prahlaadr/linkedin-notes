@@ -139,7 +139,13 @@ export default function App() {
       </div>
 
       <div className="popup-footer">
-        {entries.length} profile{entries.length !== 1 ? 's' : ''} with notes
+        <span>{entries.length} profile{entries.length !== 1 ? 's' : ''} with notes</span>
+        <button
+          className="dashboard-link"
+          onClick={() => browser.tabs.create({ url: browser.runtime.getURL('/dashboard.html' as any) })}
+        >
+          Open Dashboard
+        </button>
       </div>
     </div>
   );
