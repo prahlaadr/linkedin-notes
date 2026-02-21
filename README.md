@@ -38,18 +38,18 @@ LinkedIn Notes is different:
 
 ### From source
 
-Requires [Bun](https://bun.sh/) (or npm/pnpm/yarn).
-
 ```bash
 git clone https://github.com/prahlaadr/linkedin-notes.git
 cd linkedin-notes
-bun install
+npm install
 ```
+
+> Also works with `bun install`, `pnpm install`, or `yarn install`.
 
 #### Option 1: Dev mode (recommended for trying it out)
 
 ```bash
-bun run dev
+npm run dev
 ```
 
 This starts WXT in dev mode — it opens a Chrome window with the extension already loaded and hot reload enabled.
@@ -57,7 +57,7 @@ This starts WXT in dev mode — it opens a Chrome window with the extension alre
 #### Option 2: Production build
 
 ```bash
-bun run build
+npm run build
 ```
 
 Then load manually:
@@ -170,9 +170,9 @@ linkedin-notes/
 PRs welcome. The codebase is small and straightforward — see the project structure above.
 
 ```bash
-bun run dev        # dev mode with hot reload
-bun run build      # production build
-bun run compile    # type check
+npm run dev        # dev mode with hot reload
+npm run build      # production build
+npm run compile    # type check
 ```
 
 ## License
