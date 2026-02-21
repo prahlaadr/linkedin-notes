@@ -38,13 +38,19 @@ LinkedIn Notes is different:
 
 ### Download (no coding required)
 
-1. Go to the [latest release](https://github.com/prahlaadr/linkedin-notes/releases/latest)
-2. Download `linkedin-notes-v1.0.0-chrome.zip`
-3. Unzip it
-4. Open Chrome → `chrome://extensions/`
-5. Enable **Developer mode** (top right toggle)
-6. Click **Load unpacked** → select the `chrome-mv3` folder
-7. Done — visit any LinkedIn profile and click the 📝 icon
+Go to the [latest release](https://github.com/prahlaadr/linkedin-notes/releases/latest) and download the zip for your browser:
+
+**Chrome / Brave / Edge / Arc:**
+1. Download `linkedin-notes-v1.0.0-chrome.zip` and unzip it
+2. Open `chrome://extensions/` → enable **Developer mode** (top right)
+3. Click **Load unpacked** → select the `chrome-mv3` folder
+
+**Firefox / Zen Browser:**
+1. Download `linkedin-notes-v1.0.0-firefox.zip` and unzip it
+2. Open `about:debugging#/runtime/this-firefox`
+3. Click **Load Temporary Add-on** → select any file inside the `firefox-mv2` folder
+
+Then visit any LinkedIn profile and click the 📝 icon next to the person's name.
 
 ### From source
 
@@ -171,7 +177,7 @@ linkedin-notes/
 - [ ] Note templates ("Met at: ___", "Follow up about: ___")
 - [ ] Reminder system ("follow up in 2 weeks")
 - [ ] Chrome Web Store listing
-- [ ] Firefox support
+- [x] Firefox / Zen Browser support
 - [ ] Markdown rendering in notes
 - [ ] Edit notes from the dashboard
 
