@@ -36,6 +36,16 @@ LinkedIn Notes is different:
 
 ## Install
 
+### Download (no coding required)
+
+1. Go to the [latest release](https://github.com/prahlaadr/linkedin-notes/releases/latest)
+2. Download `linkedin-notes-v1.0.0-chrome.zip`
+3. Unzip it
+4. Open Chrome → `chrome://extensions/`
+5. Enable **Developer mode** (top right toggle)
+6. Click **Load unpacked** → select the `chrome-mv3` folder
+7. Done — visit any LinkedIn profile and click the 📝 icon
+
 ### From source
 
 ```bash
