@@ -36,6 +36,10 @@ LinkedIn Notes is different:
 
 ## Install
 
+### Chrome Web Store (easiest)
+
+Install directly from the [Chrome Web Store](https://chromewebstore.google.com/detail/pmgnbdcfngpajpphdegkepjlfkbjgbhn) and click **Add to Chrome**. Works in Chrome, Brave, Edge, and Arc. Then visit any LinkedIn profile and click the 📝 icon next to the person's name.
+
 ### Download (no coding required)
 
 Go to the [latest release](https://github.com/prahlaadr/linkedin-notes/releases/latest) and download the zip for your browser:
@@ -176,7 +180,7 @@ linkedin-notes/
 - [ ] Import/export CSV
 - [ ] Note templates ("Met at: ___", "Follow up about: ___")
 - [ ] Reminder system ("follow up in 2 weeks")
-- [ ] Chrome Web Store listing
+- [x] Chrome Web Store listing
 - [x] Firefox / Zen Browser support
 - [ ] Markdown rendering in notes
 - [ ] Edit notes from the dashboard
