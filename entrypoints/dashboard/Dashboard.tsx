@@ -13,6 +13,13 @@ export default function Dashboard() {
 
   useEffect(() => {
     loadData();
+    // Re-read when a note is saved/deleted elsewhere (e.g. the content script),
+    // so an already-open dashboard reflects new notes without a manual reload.
+    const onChanged = (_changes: unknown, area: string) => {
+      if (area === 'local') loadData();
+    };
+    browser.storage.onChanged.addListener(onChanged);
+    return () => browser.storage.onChanged.removeListener(onChanged);
   }, []);
 
   async function loadData() {

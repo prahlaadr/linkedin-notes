@@ -2,7 +2,7 @@
   "name": "linkedin-notes",
   "description": "Private notes & tags for LinkedIn profiles — a personal memory layer for your network",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "module",
   "license": "MIT",
   "scripts": {
